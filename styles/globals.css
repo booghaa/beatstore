@@ -1,0 +1,255 @@
+html,
+body,
+#__next {
+	padding: 0;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+		height: 100vh;
+		width: 100%;
+		padding: 0px;
+		margin: 0px;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+#page {
+	max-width: 1000px;
+	height: 100%;
+	width: 100%;
+}
+
+#footer{
+	position: absolute;
+	height: 15%;
+	bottom: 10px;
+	padding-right: 45px;
+	
+	backdrop-filter: blur(5px);
+}
+
+.footerContent {
+	display: flex;
+	align-items: center;
+	position: fixed;
+	width: 100%;
+	
+  }
+
+
+.auth-container {
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.content-container {
+	width: 100%;
+	
+	margin-top: 5vh;
+	margin-bottom: 5vh;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center;
+	align-items: center; */
+}
+
+.header-container {
+	justify-content: space-between;
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+.tabs{
+	flex: 1;
+	display: flex;
+}
+.header-icons{
+	display: flex;
+	flex: 1;
+	flex-direction: row-reverse;
+	
+
+}
+.header-title{
+	display: flex;
+	flex: 1;
+}
+
+.header-container-drawer {
+	justify-content: flex-start;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: center;
+  }
+  #drawer-link {
+	justify-content: flex-start;
+	display: flex;
+	align-items: center;
+	color: inherit;
+	
+	
+  }
+
+.header-container-stack {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+
+.upload-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	height: 40vh;
+}
+.add-beat-container {
+	display: flex;
+
+	flex-direction: column;
+	/* justify-content: center; */
+
+}
+button {
+	background: transparent;
+	border: 0px;
+	padding: 0;
+	height: 0;
+	font-weight: 300
+}
+
+img {
+	width: 200px;
+	height: 200px;
+	border-radius: 10px;
+}
+.img-and-remove {
+	background-size: 100%;
+	height: 200px;
+	width: 200px;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+
+.upload-container > * {
+  	width: 100%;
+}
+
+.beat-prop-headers { 
+    display: grid;
+    align-items: center;
+    grid-template-columns: 75px 350px 75px 75px 280px 100px;
+	grid-template-rows: auto;
+    margin-bottom: 20px;
+}
+.receipt-grid{
+	display: grid;
+	align-items: center;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto;
+}
+.order-prop-headers { 
+    display: grid;
+    align-items: center;
+    grid-template-columns: 400px 150px 250px 200px;
+	grid-template-rows: auto;
+    margin-bottom: 20px;
+}
+.usage-terms{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto;
+	margin-bottom: 10px;
+}
+.beat{
+	box-sizing: border-box;
+	width: 50px;
+	height: 50px;
+    margin-bottom: 15px;
+}
+
+input[type=file]::file-selector-button {
+	display: none;
+	/* font-family: sans-serif;
+	background-color: #0070f3;
+	border: 2px solid #0070f3;
+	border-radius: 5px;
+	color: white;
+	margin-right: 10px;
+	font-weight: bold; */
+}
+input[type=file] {
+	display:none
+}
+
+
+#upload-type {
+	background-color: #0070f3;
+	border: 2px solid #0070f3;
+	border-radius: 5px;
+	color: white;
+	padding: 0px 8px;
+}
+
+#drag-file-element {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 1rem;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+  }
+  #image {
+	height: 50px;
+	width: 50px;
+	border-radius: 5px;
+  }
+
+
+
+.noSelect {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.noSelect:focus {
+    outline: none !important;
+}
+
+
+.progress-container {
+	background: #333;
+	border-radius: 5px;
+	cursor: pointer;
+	margin: 10px 0;
+	opacity: 100%;
+	height: 4px;
+	width: 100%;
+  }
+  
+  .progress {
+	background-color: #fff;
+	border-radius: 5px;
+	height: 100%;
+	transition: width 0.1s linear;
+  }
+
+  input[type="range"] {
+	background: #333;
+
+  }
