@@ -106,13 +106,13 @@ export default function Upload({visibility, toggleVisibility, onUploadFinished})
         })
         const productId = await res.json()
         const wavName = wav && `${title}/wav/${wav.name}`
-        const mp3Name = mp3 && `${title}/wav/${mp3.name}`
+        const mp3Name = mp3 && `${title}/mp3/${mp3.name}`
         const taggedName = tagged && `${title}/tagged/${tagged.name}`
         const stemsName = stems && `${title}/stems/${stems.name}`
-        const mp3Src = `https://bogha.blob.core.windows.net/beatstore/${mp3Name}`
-        const stemsSrc = `https://bogha.blob.core.windows.net/beatstore/${stemsName}`
+        const mp3Src = mp3 ? `https://bogha.blob.core.windows.net/beatstore/${mp3Name}` : null
+        const stemsSrc = stems ? `https://bogha.blob.core.windows.net/beatstore/${stemsName}` : null
         const taggedSrc = tagged ? `https://bogha.blob.core.windows.net/beatstore/${taggedName}` : null
-        const wavSrc = `https://bogha.blob.core.windows.net/beatstore/${wavName}`
+        const wavSrc = wav ? `https://bogha.blob.core.windows.net/beatstore/${wavName}` : null
         const propertiesName = `${title}/properties.json`
 
         const today = new Date()
@@ -128,12 +128,14 @@ export default function Upload({visibility, toggleVisibility, onUploadFinished})
             date: dateFormatted, timestamp: timestamp, taggedSrc: taggedSrc
         }
         const jsoned = JSON.stringify(properties);
-        const files = []
+        const files = [
+            {name: mp3Name, file: mp3}, 
+            {name: wavName, file: wav}, 
+            {name: propertiesName, file: jsoned},
+        ]
         tagged && files.push({name: taggedName, file: tagged})
-        mp3 && files.push({name: mp3Name, file: mp3})
-        wav && files.push({name: wavName, file: wav})
         stems && files.push({name: stemsName, file: stems})
-
+        
         const status = await uploadToAzure(files)
         if  ( status == 200 ) {
             onUploadFinished()
@@ -193,44 +195,7 @@ export default function Upload({visibility, toggleVisibility, onUploadFinished})
         setFileType(e)
     }
 
-    const handleSchedule = (e)  => {
-        if(e.length === 1 && (e.substring(0,1) != "0" && e.substring(0,1) != "1" )){
-            setSchedule("0"+e+"/")
-            return
-        }
-        if(e.length === 4 && (e.substring(3,4) != "0" && e.substring(3,4) != "1" && e.substring(3,4) != "2" && e.substring(3,4) != "3" )){
-            setSchedule(schedule.substring(0,3) +"0"+e.substring(3,4)+"/")
-            return
-        }
-        if(e.length > 10){
-            return
-        }
-        if(e.length === 2 && schedule.length < e.length){
-            setSchedule(e + "/")
-        }
-        else if(e.length === 2 && schedule.length > e.length){
-            if(schedule.substring(0,1) === "0"){
-                setSchedule('')
-                return
-            }
-            setSchedule(schedule.substring(0,1))
-         
-        }
-        else if(e.length === 5 && schedule.length < e.length){
-            setSchedule(e + "/")
-        }
-        else if(e.length === 5 && schedule.length > e.length){
-            if(schedule.substring(3,4) === "0"){
-                setSchedule(schedule.substring(0,3))
-                return
-            }
-            setSchedule(schedule.substring(0,4))
-        }
-        else{
-            setSchedule(e)
-        }
-
-    }
+   
    
    
     if (!keyOptions) return (<Loading/>)
@@ -271,11 +236,19 @@ export default function Upload({visibility, toggleVisibility, onUploadFinished})
                     <Spacer/>
                     <div style={{display: "flex", justifyContent: "space-between"}}>
                         <div>
-                            <Input placeholder="collaborators"   {...bindings} value={collabInputVal} onChange={(e) => {setCollabInputVal(e.target.value); setIsTags(false)}} />
+                            <Input placeholder="collaborators" {...bindings} value={collabInputVal} onChange={(e) => {setCollabInputVal(e.target.value); setIsTags(false)}} />
                             {
                                 collaborators.length > 0 && 
                                 <div style={{display: "flex", width: "180px", flexWrap: "wrap", marginTop: "15px", gap: "0 0.5rem"}}>
-                                    {collaborators.map(c => <Badge mb={0.5} scale={0.75} type='success'>{c}</Badge>)}
+                                    {collaborators.map(c => <>
+                                        <div style={{display: "flex", justifyContent: "center", gap: "0.3rem"}}>
+                                            <Badge mb={0.5} scale={0.75} type='success'>{c}</Badge>
+                                            <button onClick={() => setCollaborators((current) => current.filter((collaborator) => collaborator !== c))}  style={{paddingRight: "4px"}}>
+                                                <XCircleFill size={20}/>
+                                            </button>
+                                        </div>
+                                        
+                                    </>)}
                                 </div>
                             }
                         </div>
@@ -284,23 +257,18 @@ export default function Upload({visibility, toggleVisibility, onUploadFinished})
                             {
                                 tags.length > 0 && 
                                     <div style={{display: "flex", width: "180px", flexWrap: "wrap", marginTop: "15px", gap: "0 0.5rem"}}>
-                                        {tags.map(tag => <Badge mb={0.5} scale={0.75} type='success'>#{tag}</Badge>)}
+                                        {tags.map(t => <>
+                                            <div style={{display: "flex", justifyContent: "center", gap: "0.3rem"}}>
+                                                <Badge mb={0.5} scale={0.75} type='success'>#{t}</Badge>
+                                                <button onClick={() => setTags((current) => current.filter((tag) => tag !== t))}  style={{paddingRight: "4px"}}>
+                                                <XCircleFill size={20}/>
+                                                </button>
+                                            </div>
+                                        </>)}
                                     </div>
                             }
                         </div>
                     </div>
-                    {/* <Spacer h={2}/>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <div>
-                            <div style={{display: "flex"}}>
-                                <Dot type={ schedule.length === 10 ? 'success' : 'secondary'}></Dot><Text margin={0} h4>schedule upload</Text>
-                                
-                            </div>
-                            <Text type='warning' small>optional</Text>
-                        </div>
-                        <Input icon={<Calendar/>} value={schedule} onChange={(e) => handleSchedule(e.target.value)}  ml={1} w={9} placeholder="MM/DD/YYYY"/>
-                        <Button icon={<Calendar/>} onClick={()=>setisCalendarVisible(true)} ml={1} auto>MM/DD/YYYY</Button>
-                    </div> */}
                     <Spacer h={2}/>
                     <div style={{display: "flex"}}>
                         <Dot type={ wav || mp3 ? 'success' : 'secondary'}></Dot><Text margin={0} h4>audio files</Text>

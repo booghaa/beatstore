@@ -3,6 +3,8 @@ import { CssBaseline, GeistProvider, Loading, Link, Page, Button, Divider, useTo
 import Footer from '../components/Footer'
 import Cookies from 'js-cookie'
 import '../styles/globals.css'
+import '../styles/slider.css'
+import '../styles/thumb.css'
 import AudioProvider from '../components/AudioProvider'
 import CartProvider from '../components/CartProvider'
 import { ChakraProvider } from '@chakra-ui/react'
@@ -76,7 +78,7 @@ export default function App({ Component, pageProps }) {
     <GeistProvider themeType={theme}>
         <ChakraProvider>
         <CssBaseline/>
-        <AudioProvider>
+        <AudioProvider beats={beats}>
         {!loading ?
           <CartProvider isAuthenticated={isAuthenticated}>
             <Page id="page" dotBackdrop={false} dotSize="1px">

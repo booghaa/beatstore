@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         title: beat[0].title, 
         price: beat[1].price,
         description: beat[0].trackType + " • " +  beat[1].type,  
-        stemsSrc: null, 
+        stemsSrc: beat[0].stemsSrc, 
         wavSrc: beat[0].wavSrc, 
         image: beat[0].imageSrc
       })

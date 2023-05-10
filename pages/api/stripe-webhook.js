@@ -53,7 +53,7 @@ const handler = async (req, res) => {
                         </style>
                     </head>
                     <body>
-                    <h1>LMAO GET SCAMMED</h1>
+                    <h1>Link to Order</h1>
                     </body>`
                 },
                 (error, info) => {

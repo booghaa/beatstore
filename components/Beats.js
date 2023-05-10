@@ -7,8 +7,8 @@ import { useState } from 'react'
 import AddToCart from './AddToCart'
 
 export default function Beats({beats}){
-    
-	const {playing, playingSet, index, indexSet, audio} = useAudio()
+	console.log(beats)
+	const {playing, setPlaying, index, audioRef, changeTrack} = useAudio()
     const [isLeasingModalVisible, setIsLeasingModalVisible] = useState(false)
 	const upMd = useMediaQuery('md', { match: 'up' })
 	const upSm = useMediaQuery('sm', { match: 'up' })
@@ -20,21 +20,18 @@ export default function Beats({beats}){
 		upMd ? 8 : 0, 
 		upMd ? 2.525 : 12
 	]
-   
 	const handleAudio = (idx) => {
+		const audio = audioRef.current;
 		if(idx != index){
-			audio.setAttribute('src', beats[idx].taggedSrc ? beats[idx].taggedSrc: beats[idx].wavSrc )
-			audio.play()   
-			playingSet(true)
-			indexSet(idx)
+			changeTrack(idx)
 		}
 		else if(playing){
 			audio.pause()
-			playingSet(false)
+			setPlaying(false)
 		}
 		else if(!playing){
 			audio.play()
-			playingSet(true)
+			setPlaying(true)
 		}
 	}
     return(

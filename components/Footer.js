@@ -3,102 +3,63 @@ import { Text , Spacer , Button, useTheme, Themes, Grid, Card, useMediaQuery} fr
 import { useAudio } from './AudioProvider'
 import { Play , Pause, SkipBack, SkipForward , Volume2 , Volume1 , Volume , VolumeX, ShoppingCart, Share2 } from '@geist-ui/icons'
 import { Slider , SliderTrack , SliderThumb, SliderFilledTrack, Box, theme } from '@chakra-ui/react'
+import CustomSlider from './Slider'
 import AddToCart from './AddToCart'
 export default function Footer({beats}) {
-  const {
-    playing, playingSet, 
-    index, indexSet, 
-     audio,
-    volume, volumeSet
+  const {playing, setPlaying, index, setIndex, percentage, audioRef, changeTrack,
+    volume, volumeSet, setPercentage, setSrc
     } = useAudio()
 
  
-  const [isOnClick, setIsOnClick] = useState(false)
-  const [timeStamp, setTimeStamp] = useState(0)
-  const animationRef = useRef(); 
   const theme = useTheme()
   const upMd = useMediaQuery('md', { match: 'up' })
   const upSm = useMediaQuery('sm', { match: 'up' })
-  const stop = () =>{
-    cancelAnimationFrame(animationRef.current);
-  }
-  function setProgress(e) {
-    const width = this.clientWidth;
-    const clickX = e.offsetX;
-    const duration = audio.duration;
   
-    audio.currentTime = (clickX / width) * duration;
-  }
-  const onChangeProgress = (val) => { 
-    if(isOnClick){
-      setTimeStamp(val)
-    }
-  }
   
-  useEffect(() => {
-    if(index != -1){
-      setTimeStamp(0)
-      whilePlaying()
-    }
-   
-  }, [index]);
+  const onChange = (e) => {
+    const audio = audioRef.current
+    audio.currentTime = (audio.duration / 100) * e.target.value
+    setPercentage(e.target.value)
+  }
   const handleAudio = () =>  {
+    const audio = audioRef.current;
     if(playing){
-     
       audio.pause()
-      
-      playingSet(false)
+      setPlaying(false)
     }
     else{
       audio.play()
-      animationRef.current = requestAnimationFrame(whilePlaying)
-      playingSet(true)
+      setPlaying(true)
     }
-  }
-  const whilePlaying = () => {
-    setTimeStamp((audio.currentTime/audio.duration) * 100)
-    const progressPercent = (audio.currentTime/audio.duration) * 100
-   
-    animationRef.current = requestAnimationFrame(whilePlaying)
   }
   
   const next = () => {
-    if(index + 1 === beats.length){
-      
-      audio.setAttribute('currentTime',0)
-      setTimeStamp(0)
-      progress.current.value = `0%`
-
+    const audio = audioRef.current;
+    if(index + 1 == beats.length){
+      audio.currentTime = 0;
     }
     else{
-      indexSet(index+1)
-      audio.setAttribute('src', beats[index+1].audioURL)
-		  audio.play()
+     changeTrack(index+1)
     }
-    
-		playingSet(true)
+		setPlaying(true)
   }
   const back = () => { 
-    indexSet(index-1)
-    audio.setAttribute('src', beats[index-1].audioURL)
-		audio.play()
-		playingSet(true)
+    const audio = audioRef.current;
+    if(index-1 < 0){
+      audio.currentTime = 0;
+    }
+    else{
+      changeTrack(index-1)
+    }
+    
   }
   
   return (
     <div>
       {index != -1 &&
       <div>
-        
         <div className='audioTime'>
-        
-          <Slider focusThumbOnChange={false} defaultValue={0} onChange={(val) => onChangeProgress(val)} min={0} max={100} step={0.05} value={timeStamp} >
-            <SliderTrack onClick={()=>stop()} bg='whiteAlpha.300'>
-              <Box position='relative' right={10} />
-              <SliderFilledTrack  bg='white' />
-            </SliderTrack>
-            <SliderThumb onClick={()=>stop()} boxSize={2.5} />
-          </Slider>
+        <CustomSlider percentage={percentage} onChange={onChange} />
         </div>
         <Grid.Container>
           <Grid xs={upMd ? 11 : 10} style={{display: "flex", alignItems: "center"}}>
@@ -119,7 +80,6 @@ export default function Footer({beats}) {
           </Grid>
           <Grid xs={upMd ? 7 : 6} style={{display: "flex"}}>
             <Button onClick={()=>back()} scale={1.5} pl={0.2} pr={0.2} auto type='abort' icon={<SkipBack color={theme.palette.accents_7}/>}/>  
-            
            { upMd && <Spacer/>}
             {playing 
               ? <Button onClick={()=>handleAudio()} scale={1.5} pl={0.2} pr={0.2} auto type='abort' icon={<Pause color={theme.palette.accents_8}/>}/>    
