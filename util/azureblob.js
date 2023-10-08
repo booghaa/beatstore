@@ -1,8 +1,7 @@
 import axios from "axios";
 
-// THIS IS SAMPLE CODE ONLY - NOT MEANT FOR PRODUCTION USE
 const { BlobServiceClient } = require("@azure/storage-blob");
-const blobSasUrl = "https://bogha.blob.core.windows.net/?sv=2021-06-08&ss=bfqt&srt=co&sp=rwdlacupiytfx&se=2023-10-02T08:38:05Z&st=2022-10-02T00:38:05Z&spr=https&sig=ZDO4voICa1urMyD4eyiA%2FQGrnaIiJoYGqmOV8ZrLJWc%3D"
+const blobSasUrl = "https://bogha.blob.core.windows.net/beatstore?sp=racwd&st=2023-10-08T22:29:54Z&se=2025-04-24T06:29:54Z&spr=https&sv=2022-11-02&sr=c&sig=F0t7k7lTnHwucdanVJ7nTiwZZptKVhlpSIALlFalbHQ%3D"
 const blobServiceClient = new BlobServiceClient(blobSasUrl);
 const containerClient = blobServiceClient.getContainerClient("beatstore")
 

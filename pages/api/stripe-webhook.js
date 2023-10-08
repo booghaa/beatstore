@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 import { nanoid } from 'nanoid'
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 import axios from "axios";
-const endpointSecret = process.env.STRIPE_ENDPOINT_KEY;
+const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
 const nodemailer = require("nodemailer");
 export const config = {
     api: {
